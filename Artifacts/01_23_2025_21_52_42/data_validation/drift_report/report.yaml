@@ -1,0 +1,109 @@
+Abnormal_URL:
+  is_found: &id001 !!python/object/apply:numpy._core.multiarray.scalar
+  - !!python/object/apply:numpy.dtype
+    args:
+    - b1
+    - false
+    - true
+    state: !!python/tuple
+    - 3
+    - '|'
+    - null
+    - null
+    - null
+    - -1
+    - -1
+    - 0
+  - !!binary |
+    AA==
+  pvalue: 0.9999999937067042
+DNSRecord:
+  is_found: *id001
+  pvalue: 0.385135533909838
+Domain_registeration_length:
+  is_found: *id001
+  pvalue: 0.9996310245366614
+Favicon:
+  is_found: *id001
+  pvalue: 0.9925057532803859
+Google_Index:
+  is_found: *id001
+  pvalue: 0.9419874517453551
+HTTPS_token:
+  is_found: *id001
+  pvalue: 0.9999999183836157
+Iframe:
+  is_found: *id001
+  pvalue: 1.0
+Links_in_tags:
+  is_found: *id001
+  pvalue: 0.999897967392436
+Links_pointing_to_page:
+  is_found: *id001
+  pvalue: 0.9999977664874452
+Page_Rank:
+  is_found: *id001
+  pvalue: 1.0
+Prefix_Suffix:
+  is_found: *id001
+  pvalue: 0.9465726233509338
+Redirect:
+  is_found: *id001
+  pvalue: 1.0
+Request_URL:
+  is_found: *id001
+  pvalue: 1.0
+Result:
+  is_found: *id001
+  pvalue: 0.6889210353015696
+RightClick:
+  is_found: *id001
+  pvalue: 0.9999999937067042
+SFH:
+  is_found: *id001
+  pvalue: 0.9626939122843975
+SSLfinal_State:
+  is_found: *id001
+  pvalue: 1.0
+Shortining_Service:
+  is_found: *id001
+  pvalue: 0.9993575225500247
+Statistical_report:
+  is_found: *id001
+  pvalue: 0.7072990318667982
+Submitting_to_email:
+  is_found: *id001
+  pvalue: 1.0
+URL_Length:
+  is_found: *id001
+  pvalue: 0.9739373282597479
+URL_of_Anchor:
+  is_found: *id001
+  pvalue: 0.9979064957775123
+age_of_domain:
+  is_found: *id001
+  pvalue: 0.5156700601077194
+double_slash_redirecting:
+  is_found: *id001
+  pvalue: 0.9965509131164109
+having_At_Symbol:
+  is_found: *id001
+  pvalue: 0.999897967392436
+having_IP_Address:
+  is_found: *id001
+  pvalue: 1.0
+having_Sub_Domain:
+  is_found: *id001
+  pvalue: 0.9346948266567272
+on_mouseover:
+  is_found: *id001
+  pvalue: 1.0
+popUpWidnow:
+  is_found: *id001
+  pvalue: 0.9999147454268268
+port:
+  is_found: *id001
+  pvalue: 0.9999999999975706
+web_traffic:
+  is_found: *id001
+  pvalue: 0.9930771198401785

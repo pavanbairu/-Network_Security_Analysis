@@ -23,6 +23,7 @@ class DataIngestionConfig():
         self.collection: str = training_pipeline.DATA_INGESTION_COLLECTION_NAME
         self.train_test_split_ratio: float = training_pipeline.DATA_INGESTION_TRAIN_TEST_SPLIT_RATION
         self.random_state: int = training_pipeline.DATA_INGESTION_RANDOM_STATE
+        self.threshold: float = training_pipeline.DATA_VALIDATION_THRESHOLD
 
 class DataValidationConfig():
     def __init__(self, training_pipeline_conffig: TrainingPipelineConfig):
@@ -33,7 +34,7 @@ class DataValidationConfig():
         self.valid_test_file_path: str = os.path.join(self.valid_data_dir, training_pipeline.TEST_FILE_NAME)
         self.invalid_train_file_path: str = os.path.join(self.invalid_data_dir, training_pipeline.TRAIN_FILE_NAME)
         self.invalid_test_file_path: str = os.path.join(self.invalid_data_dir,training_pipeline.TEST_FILE_NAME)
-        self.drift_report_file_path: str = os.path.join(self.valid_data_dir, training_pipeline.DATA_VALIDATION_DRIFT_REPORT_DIR, training_pipeline. DATA_VALIDATION_DRIFT_REPORT_FILE_NAME)
+        self.drift_report_file_path: str = os.path.join(self.data_validation_dir, training_pipeline.DATA_VALIDATION_DRIFT_REPORT_DIR, training_pipeline. DATA_VALIDATION_DRIFT_REPORT_FILE_NAME)
         
 class DataTransformationConfig:
      def __init__(self,training_pipeline_config:TrainingPipelineConfig):

@@ -4,4 +4,6 @@ numpy
 pandas
 certifi
 scikit-learn
+pyyaml
+python-box
 -e .
