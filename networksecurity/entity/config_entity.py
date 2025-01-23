@@ -22,6 +22,7 @@ class DataIngestionConfig():
         self.database_name: str = training_pipeline.DATA_INGESTION_DATABASE_NAME
         self.collection: str = training_pipeline.DATA_INGESTION_COLLECTION_NAME
         self.train_test_split_ratio: float = training_pipeline.DATA_INGESTION_TRAIN_TEST_SPLIT_RATION
+        self.random_state: int = training_pipeline.DATA_INGESTION_RANDOM_STATE
 
 class DataValidationConfig():
     def __init__(self, training_pipeline_conffig: TrainingPipelineConfig):

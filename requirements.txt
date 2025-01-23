@@ -1,5 +1,7 @@
-pymongo[srv]==3.12
+pymongo
 python-dotenv
-certifi
 numpy
 pandas
+certifi
+scikit-learn
+-e .
