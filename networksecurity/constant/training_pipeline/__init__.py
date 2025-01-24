@@ -3,6 +3,13 @@ import sys
 import numpy as np
 import pandas as pd
 
+from sklearn.linear_model import LogisticRegression
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import GradientBoostingClassifier
+from sklearn.ensemble import AdaBoostClassifier
+
 """
 defining common constant variable for training pipeline
 """
@@ -68,6 +75,56 @@ MODEL_TRAINER_TRAINED_MODEL_DIR: str = "trained_model"
 MODEL_TRAINER_TRAINED_MODEL_NAME: str = "model.pkl"
 MODEL_TRAINER_EXPECTED_SCORE: float = 0.6
 MODEL_TRAINER_OVER_FIITING_UNDER_FITTING_THRESHOLD: float = 0.05
+
+MODELS: dict = {
+    "LogisticRegression" : LogisticRegression(),
+    "KNeighborsClassifier" : KNeighborsClassifier(),
+    "DecisionTreeClassifier" : DecisionTreeClassifier(),
+    "RandomForestClassifier" : RandomForestClassifier(),
+    "GradientBoostingClassifier" : GradientBoostingClassifier(),
+    "AdaBoostClassifier" : AdaBoostClassifier()
+}
+
+HYPERPARAMETERS: dict = {
+    "LogisticRegression": {},
+    "KNeighborsClassifier": {
+        "n_neighbors": [3, 5, 7, 9],
+        "weights": ["uniform", "distance"],
+        "metric": ["euclidean", "manhattan", "minkowski"],
+    },
+    "DecisionTreeClassifier": {
+        "criterion": ["gini", "entropy", "log_loss"],
+#         "splitter": ["best", "random"],
+#         "max_depth": [None, 5, 10, 20, 50],
+#         "min_samples_split": [2, 5, 10],
+#         "min_samples_leaf": [1, 2, 4],
+    },
+    "RandomForestClassifier": {
+        "n_estimators": [10, 50, 100, 200],
+#         "criterion": ["gini", "entropy", "log_loss"],
+#         'max_features':['sqrt','log2',None],
+#         "max_depth": [None, 10, 20, 50],
+#         "min_samples_split": [2, 5, 10],
+#         "min_samples_leaf": [1, 2, 4],
+#         "bootstrap": [True, False],
+    },
+    "GradientBoostingClassifier": {
+#         "n_estimators": [50, 100, 200],
+        "learning_rate": [0.01, 0.1, 0.2, 0.5],
+        'subsample':[0.6,0.7,0.75,0.85,0.9],
+        # 'criterion':['squared_error', 'friedman_mse'],
+        # 'max_features':['auto','sqrt','log2'],
+#         "max_depth": [3, 5, 10],
+#         "min_samples_split": [2, 5, 10],
+#         "min_samples_leaf": [1, 2, 4],
+    },
+    "AdaBoostClassifier": {
+        "n_estimators": [10, 50, 100, 200],
+        "learning_rate": [0.01, 0.1, 0.5, 1.0],
+#         "algorithm": ["SAMME", "SAMME.R"],
+    }
+}
+
 
 """
 Model Evalaution ralated constant start with MODE TRAINER VAR NAME

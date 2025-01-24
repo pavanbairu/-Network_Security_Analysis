@@ -3,11 +3,13 @@ import sys
 
 from networksecurity.components.data_ingestion import DataIngestion
 from networksecurity.components.data_validation import DataValidation
+from networksecurity.components.model_trainer import ModelTrainer
 from networksecurity.components.data_transformation import DataTransformation
 from networksecurity.entity.config_entity import (TrainingPipelineConfig,
                                                   DataIngestionConfig,
                                                   DataValidationConfig,
-                                                  DataTransformationConfig)
+                                                  DataTransformationConfig,
+                                                  ModelTrainerConfig)
 
 from networksecurity.logger.logger import logging  # Assuming a logging setup is in place
 
@@ -47,7 +49,16 @@ if __name__ == "__main__":
         data_transformation = DataTransformation(data_validation_artifact, data_transformation_config)
 
         # Start the data transformation workflow.
-        data_transformation.initiate_data_transformation()
+        data_transformation_artifact = data_transformation.initiate_data_transformation()
+
+        # Initialize the model trainer configuration with the training pipeline configuration
+        model_trainer_config = ModelTrainerConfig(training_pipeline_config)
+
+        # Create an instance of the ModelTrainer class using data transformation artifacts and the model trainer configuration
+        model_trainer = ModelTrainer(data_transformation_artifact, model_trainer_config)
+
+        # Start the model training process and generate the model trainer artifact
+        model_trainer_artifact = model_trainer.initiate_model_trainer()
 
     except Exception as e:
         # Log the exception and raise it for further debugging
