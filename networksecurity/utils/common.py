@@ -1,6 +1,8 @@
 import os
 import sys
 import yaml
+import numpy as np
+import pickle
 from pathlib import Path
 from box import Box
 from networksecurity.exception.exception import NetworkSecurityException
@@ -48,4 +50,54 @@ def write_yaml(data: dict, path: Path) -> dict:
         
     except Exception as e:
         logging.error(f"Failed to write data to YAML file at path: {path}. Error: {e}")
+        raise NetworkSecurityException(e, sys)
+
+
+def save_numpy_array(data: np.array, path: Path):
+    """
+    Saves a NumPy array to a specified file path.
+
+    Args:
+        data (np.array): The NumPy array to be saved.
+        path (Path): The file path where the array should be saved.
+
+    Returns:
+        None: The function does not return anything; it writes the array to the file.
+    """
+    try:
+        # Ensure the directory exists
+        dir_name = os.path.dirname(path)
+        os.makedirs(dir_name, exist_ok=True)
+
+        # Save NumPy array to file
+        with open(path, 'wb') as file:
+            np.save(path, data)
+        
+    except Exception as e:
+        logging.error(f"Failed to save NumPy array at {path}. Error: {e}")
+        raise NetworkSecurityException(e, sys)
+
+
+def save_object(model, path: Path):
+    """
+    Saves a Python object (e.g., a machine learning model) to a specified file path using Pickle.
+
+    Args:
+        model (object): The object to be saved.
+        path (Path): The file path where the object should be saved.
+
+    Returns:
+        None: The function does not return anything; it writes the object to the file.
+    """
+    try:
+        # Ensure the directory exists
+        dir_name = os.path.dirname(path)
+        os.makedirs(dir_name, exist_ok=True)
+
+        # Save the object to file
+        with open(path, 'wb') as file:
+            pickle.dump(model, file)
+
+    except Exception as e:
+        logging.error(f"Failed to save object at {path}. Error: {e}")
         raise NetworkSecurityException(e, sys)
