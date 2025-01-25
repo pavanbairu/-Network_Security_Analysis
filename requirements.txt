@@ -6,4 +6,6 @@ certifi
 scikit-learn
 pyyaml
 python-box
+mlflow
+dagshub
 -e .

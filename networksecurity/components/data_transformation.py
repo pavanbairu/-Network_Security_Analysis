@@ -107,6 +107,8 @@ class DataTransformation:
             save_numpy_array(train_array, self.data_transformation_config.transformed_train_file_path)
             save_numpy_array(test_array, self.data_transformation_config.transformed_test_file_path)
             save_object(processor, self.data_transformation_config.transformed_object_file_path)
+            save_object(processor, "final-models/preprocessor.pkl")
+
             logging.info("Transformed data and pipeline object saved successfully.")
 
             # Create artifact

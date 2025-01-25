@@ -2,6 +2,7 @@ import os
 import sys
 import numpy as np
 import pandas as pd
+import mlflow
 
 from pathlib import Path
 from networksecurity.entity.artifact_entity import DataTransformationArtifact, ModelTrainerArtifact, ClassificationMetricArtifact
@@ -11,6 +12,9 @@ from networksecurity.constant.training_pipeline import MODELS, HYPERPARAMETERS
 from networksecurity.logger.logger import logging
 from networksecurity.utils.common import save_object, load_numpy_array, model_evaluation
 from networksecurity.utils.ml_utils.classification_scores import get_classification_scores
+
+import dagshub
+dagshub.init(repo_owner='pavanbairu', repo_name='Network_Security_Analysis', mlflow=True)
 
 class ModelTrainer:
 
@@ -30,6 +34,19 @@ class ModelTrainer:
 
         except Exception as e:
             logging.error(f"Error initializing ModelTrainer. Error: {e}")
+            raise NetworkSecurityException(e, sys)
+        
+    def track_flow(self, best_model, classificationmetric: ClassificationMetricArtifact):
+        try:
+
+            with mlflow.start_run():
+                mlflow.log_metric("accuracy_score", classificationmetric.accuracy)
+                mlflow.log_metric("f1_score", classificationmetric.f1_score)
+                mlflow.log_metric("precession_score", classificationmetric.precision_score)
+                mlflow.log_metric("recall_score", classificationmetric.recall_score)
+                mlflow.sklearn.log_model(best_model, "model")
+
+        except Exception as e:
             raise NetworkSecurityException(e, sys)
 
     def train_model(self, X_train, y_train, X_test, y_test) -> ModelTrainerArtifact:
@@ -68,10 +85,14 @@ class ModelTrainer:
             test_classification_metric = get_classification_scores(y_test, y_test_pred)
             logging.info("Classification metrics artifact created successfully.")
 
+            self.track_flow(best_model_pickle, train_classification_metric)
+            self.track_flow(best_model_pickle, test_classification_metric)
+
             # Save the best model
             dirname = os.path.dirname(self.model_trainer_config.trained_model_file_path)
             os.makedirs(dirname, exist_ok=True)
             save_object(best_model_pickle, self.model_trainer_config.trained_model_file_path)
+            save_object(best_model_pickle, "final-models/model.pkl")
             logging.info(f"Best model saved at: {self.model_trainer_config.trained_model_file_path}")
 
             # Create and return the artifact
