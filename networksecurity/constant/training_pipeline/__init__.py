@@ -27,6 +27,10 @@ SCHEMA_FILE_PATH = os.path.join("data_schema", "schema.yaml")
 SCHEMA_DROP_COLS = "drop_columns"
 SAVED_MODEL_DIR =os.path.join("saved_models")
 
+FINAL_PREPROCESSOR_PATH = "final-models/preprocessor.pkl"
+FINAL_MODEL_PATH = "final-models/model.pkl"
+
+
 """
 Data Ingestion related constant start with DATA_INGESTION VAR NAME
 """

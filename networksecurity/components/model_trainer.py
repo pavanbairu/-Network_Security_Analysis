@@ -8,7 +8,7 @@ from pathlib import Path
 from networksecurity.entity.artifact_entity import DataTransformationArtifact, ModelTrainerArtifact, ClassificationMetricArtifact
 from networksecurity.entity.config_entity import ModelTrainerConfig
 from networksecurity.exception.exception import NetworkSecurityException
-from networksecurity.constant.training_pipeline import MODELS, HYPERPARAMETERS
+from networksecurity.constant.training_pipeline import MODELS, HYPERPARAMETERS, FINAL_MODEL_PATH
 from networksecurity.logger.logger import logging
 from networksecurity.utils.common import save_object, load_numpy_array, model_evaluation
 from networksecurity.utils.ml_utils.classification_scores import get_classification_scores
@@ -92,7 +92,7 @@ class ModelTrainer:
             dirname = os.path.dirname(self.model_trainer_config.trained_model_file_path)
             os.makedirs(dirname, exist_ok=True)
             save_object(best_model_pickle, self.model_trainer_config.trained_model_file_path)
-            save_object(best_model_pickle, "final-models/model.pkl")
+            save_object(best_model_pickle, FINAL_MODEL_PATH)
             logging.info(f"Best model saved at: {self.model_trainer_config.trained_model_file_path}")
 
             # Create and return the artifact
