@@ -29,6 +29,7 @@ SAVED_MODEL_DIR =os.path.join("saved_models")
 
 FINAL_PREPROCESSOR_PATH = "final-models/preprocessor.pkl"
 FINAL_MODEL_PATH = "final-models/model.pkl"
+FINAL_PREDICTED_OUTPUT = "prediction_output/output.csv"
 
 
 """

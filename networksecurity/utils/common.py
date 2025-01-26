@@ -105,7 +105,29 @@ def save_object(model, path: Path):
     except Exception as e:
         logging.error(f"Failed to save object at {path}. Error: {e}")
         raise NetworkSecurityException(e, sys)
-    
+
+def load_object(path: Path):
+    """
+    loads a Python object (e.g., a machine learning model) from a specified file path using Pickle.
+
+    Args:
+        path (Path): The file path where the object saved.
+
+    Returns:
+        None: The function does not return anything; it loads the object from the file.
+    """
+    try:
+        # Ensure the directory exists
+        dir_name = os.path.dirname(path)
+        os.makedirs(dir_name, exist_ok=True)
+
+        # Save the object to file
+        with open(path, 'rb') as file:
+            return pickle.load(file)
+
+    except Exception as e:
+        logging.error(f"Failed to save object at {path}. Error: {e}")
+        raise NetworkSecurityException(e, sys)   
 
 def load_numpy_array(path: Path):
     """
