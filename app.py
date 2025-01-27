@@ -7,8 +7,8 @@ from networksecurity.logger.logger import logging
 from networksecurity.pipeline.training_pipeline import TrainingPipeline
 from networksecurity.utils.ml_utils.estimator import NetworkModel
 from networksecurity.utils.common import load_object
-from networksecurity.constant.training_pipeline import FINAL_PREPROCESSOR_PATH, FINAL_MODEL_PATH, FINAL_PREDICTED_OUTPUT
-
+from cloud.s3_sync import S3Sync
+from networksecurity.constant.training_pipeline import FINAL_MODELS, PREPROCESSING_OBJECT_FILE_NAME, MODEL_FILE_NAME, FINAL_PREDICTED_OUTPUT
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, File, UploadFile, Request
 from uvicorn import run
@@ -85,8 +85,8 @@ async def predict_route(request: Request, file: UploadFile = File(...)):
         df = pd.read_csv(file.file)
 
         # Load pre-trained preprocessor and model
-        preprocessor = load_object(FINAL_PREPROCESSOR_PATH)
-        final_model = load_object(FINAL_MODEL_PATH)
+        preprocessor = load_object(os.path.join(FINAL_MODELS, PREPROCESSING_OBJECT_FILE_NAME ))
+        final_model = load_object(os.path.join(FINAL_MODELS, MODEL_FILE_NAME))
 
         # Initialize the model with preprocessor
         network_model = NetworkModel(preprocessor=preprocessor, model=final_model)

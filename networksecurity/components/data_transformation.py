@@ -9,7 +9,6 @@ from networksecurity.entity.config_entity import DataTransformationConfig
 from networksecurity.constant.training_pipeline import (
     TARGET_COLUMN,
     DATA_TRANSFORMATION_IMPUTER_PARAMS,
-    FINAL_PREPROCESSOR_PATH
 )    
 from networksecurity.exception.exception import NetworkSecurityException
 from networksecurity.utils.common import save_numpy_array, save_object
@@ -111,7 +110,7 @@ class DataTransformation:
             save_numpy_array(train_array, self.data_transformation_config.transformed_train_file_path)
             save_numpy_array(test_array, self.data_transformation_config.transformed_test_file_path)
             save_object(processor, self.data_transformation_config.transformed_object_file_path)
-            save_object(processor,FINAL_PREPROCESSOR_PATH)
+            save_object(processor,self.data_transformation_config.final_object_file_path)
 
             logging.info("Transformed data and pipeline object saved successfully.")
 

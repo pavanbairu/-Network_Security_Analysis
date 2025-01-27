@@ -27,8 +27,7 @@ SCHEMA_FILE_PATH = os.path.join("data_schema", "schema.yaml")
 SCHEMA_DROP_COLS = "drop_columns"
 SAVED_MODEL_DIR =os.path.join("saved_models")
 
-FINAL_PREPROCESSOR_PATH = "final-models/preprocessor.pkl"
-FINAL_MODEL_PATH = "final-models/model.pkl"
+FINAL_MODELS = "final-models"
 FINAL_PREDICTED_OUTPUT = "prediction_output/output.csv"
 
 
@@ -142,6 +141,6 @@ MODEL_EVALUATION_REPORT_NAME= "report.yaml"
 MODEL_PUSHER_DIR_NAME = "model_pusher"
 MODEL_PUSHER_SAVED_MODEL_DIR = SAVED_MODEL_DIR
 
-TRAINING_BUCKET_NAME = "mynetworksecurity"
+TRAINING_BUCKET_NAME = "networksecurityanalysis"
 PREDICTION_BUCKET_NAME = "my-network-datasource"
 PREDICTION_DIR="prediction"
