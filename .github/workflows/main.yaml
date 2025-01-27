@@ -66,51 +66,35 @@ jobs:
           echo "::set-output name=image::$IMAGE_URI"
 
   Continuous-Deployment:
-    name: Continuous Deployment
-    needs: build-and-push # Depends on the build-and-push job
+    needs: build-and-push
     runs-on: self-hosted
     steps:
-        # Step 1: Checkout the code
       - name: Checkout
         uses: actions/checkout@v3
 
-        # Step 2: Configure AWS credentials
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
-        
-        # Step 3: Log in to Amazon ECR
+
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
-    
-        # step 4: Downloads the latest version of the Docker image from the specified ECR repository.
-      - name: Pull the latest Docker image from ECR
+      
+      
+      - name: Pull latest images
         run: |
-          docker pull ${{ secrets.AWS_ECR_LOGIN_URI }}/${{ secrets.ECR_REPOSITORY_NAME }}:latest
+          docker pull ${{secrets.AWS_ECR_LOGIN_URI}}/${{ secrets.ECR_REPOSITORY_NAME }}:latest
+          
+      #- name: Stop and remove  container if running
+        # run: |
+        # docker ps -q --filter "name=networksecurity" | grep -q . && docker stop networksecurity && docker rm -fv networksecurity
         
-        # step 5: Checks if a container repository is running, stops it, and removes it.
-        # If no container is found, it skips this step without failing the job.
-      - name: Stop and remove the old container if running
+      - name: Run Docker Image to serve users
         run: |
-          docker ps -q --filter "name=${{ secrets.ECR_REPOSITORY_NAME }}" | grep -q . && docker stop networksecurity && docker rm -fv networksecurity || echo "No existing container to stop"
-        
-        # step 6: Starts a new container with the latest image and maps it to port 8080.
-        # Environment variables are passed for AWS credentials and region.
-      - name: Run the new Docker image to serve users
+          docker run -d -p 8080:8080 --ipc="host" --name=networksecurity -e 'AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}' -e 'AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}' -e 'AWS_REGION=${{ secrets.AWS_REGION }}'  ${{secrets.AWS_ECR_LOGIN_URI}}/${{ secrets.ECR_REPOSITORY_NAME }}:latest
+      - name: Clean previous images and containers
         run: |
-            docker run -d -p 8080:8080 --ipc="host" \
-            --name=${{ secrets.ECR_REPOSITORY_NAME }} \
-            -e AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} \
-            -e AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }} \
-            -e AWS_REGION=${{ secrets.AWS_REGION }} \
-            ${{ secrets.AWS_ECR_LOGIN_URI }}/${{ secrets.ECR_REPOSITORY_NAME }}:latest
-
-        # step 7: Removes unused Docker resources (e.g., old images, stopped containers) to free up space.
-        # Does not fail the job if there is nothing to clean.
-      - name: Clean up unused Docker images and containers
-        run: |
-            docker system prune -af || echo "No unused images or containers to remove"
+          docker system prune -f
