@@ -63,7 +63,7 @@ jobs:
           docker push $IMAGE_URI
           
           # Output the image URI
-          echo "::set-output name=image::$IMAGE_URI
+          echo "::set-output name=image::$IMAGE_URI"
 
   Continuous-Deployment:
     name: Deployment
