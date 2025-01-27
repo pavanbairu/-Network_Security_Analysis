@@ -49,6 +49,7 @@ jobs:
 
       # Step 4: Build and push the Docker image to ECR
       - name: Build and Push Docker Image
+        id: build-image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY_NAME }}
