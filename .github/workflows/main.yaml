@@ -85,11 +85,12 @@ jobs:
           echo "AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}"
           echo "AWS_REGION: ${{ secrets.AWS_REGION }}"
           echo "AWS_ECR_LOGIN_URI: ${{ secrets.AWS_ECR_LOGIN_URI }}"
-      
+  
       
       - name: Pull latest images
         run: |
-         docker pull ${{secrets.AWS_ECR_LOGIN_URI}}/${{ secrets.ECR_REPOSITORY_NAME }}:latest
+         docker pull ${{ steps.login-ecr.outputs.registry }}/${{ secrets.ECR_REPOSITORY_NAME }}:latest
+
          
       #- name: Stop and remove  container if running
        # run: |
