@@ -92,9 +92,11 @@ jobs:
          docker pull ${{ steps.login-ecr.outputs.registry }}/${{ secrets.ECR_REPOSITORY_NAME }}:latest
 
          
-      - name: Stop and remove  container if running
+      - name: Stop and remove existing container (if exists)
         run: |
-         docker ps -q --filter "name=networksecurity" | grep -q . && docker stop networksecurity && docker rm -fv networksecurity
+          docker ps -q --filter "name=networksecurity" | xargs -r docker stop || true
+          docker ps -a -q --filter "name=networksecurity" | xargs -r docker rm -fv || true
+       
        
       - name: Run Docker Image to serve users
         run: |
