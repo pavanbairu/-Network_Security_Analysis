@@ -32,6 +32,14 @@ FINAL_PREDICTED_OUTPUT = "prediction_output/output.csv"
 
 
 """
+MONGODB PATHS
+"""
+
+MONGOD_URL_PATH = "networksecurity.mongo_db_url"
+AWS_REGION = "us-east-1"
+
+
+"""
 Data Ingestion related constant start with DATA_INGESTION VAR NAME
 """
 DATA_INGESTION_COLLECTION_NAME: str = "NetworkData"

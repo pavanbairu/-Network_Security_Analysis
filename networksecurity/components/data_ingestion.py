@@ -6,15 +6,13 @@ from networksecurity.logger.logger import logging
 
 from networksecurity.entity.artifact_entity import DataIngestionArtifact
 from networksecurity.entity.config_entity import DataIngestionConfig
+from cloud.mongodb import get_mongodb_url
+from networksecurity.constant.training_pipeline import MONGOD_URL_PATH, AWS_REGION
 
 import numpy as np
 import pandas as pd
 import pymongo
 
-from dotenv import load_dotenv
-load_dotenv()
-
-MONGODB_URL = os.getenv('MONGODB_URL')
 from sklearn.model_selection import train_test_split
 
 
@@ -29,6 +27,7 @@ class DataIngestion:
         Initializes the DataIngestion object with configuration parameters.
         """
         self.data_ingestion_config = data_ingestion_config
+        self.mongo_db_url = get_mongodb_url(MONGOD_URL_PATH, AWS_REGION)
 
     def export_collection_as_dataframe(self) -> pd.DataFrame:
         """
@@ -42,7 +41,7 @@ class DataIngestion:
             logging.info("Connecting to MongoDB to export collection as a DataFrame.")
             collection_name = self.data_ingestion_config.collection
             database_name = self.data_ingestion_config.database_name
-            self.mongo_client = pymongo.MongoClient(MONGODB_URL)
+            self.mongo_client = pymongo.MongoClient(self.mongo_db_url)
             collection = self.mongo_client[database_name][collection_name]
             
             logging.info(f"Fetching data from database: {database_name}, collection: {collection_name}")
