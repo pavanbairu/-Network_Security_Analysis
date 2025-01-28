@@ -16,6 +16,16 @@ from networksecurity.utils.ml_utils.classification_scores import get_classificat
 import dagshub
 dagshub.init(repo_owner='pavanbairu', repo_name='Network_Security_Analysis', mlflow=True)
 
+from urllib.parse import urlparse
+
+MLFLOW_TRACKING_URI = "https://dagshub.com/pavanbairu/Network_Security_Analysis.mlflow"
+MLFLOW_TRACKING_USERNAME = "pavanbairu"
+MLFLOW_TRACKING_PASSWORD = "45684133603ce329e9ccd4a9897b4e9d6f2176b0"
+
+os.environ["MLFLOW_TRACKING_URI"] = MLFLOW_TRACKING_URI
+os.environ["MLFLOW_TRACKING_USERNAME"] = MLFLOW_TRACKING_USERNAME
+os.environ["MLFLOW_TRACKING_PASSWORD"] = MLFLOW_TRACKING_PASSWORD
+
 class ModelTrainer:
 
     def __init__(self,
@@ -36,17 +46,35 @@ class ModelTrainer:
             logging.error(f"Error initializing ModelTrainer. Error: {e}")
             raise NetworkSecurityException(e, sys)
         
-    def track_flow(self, best_model, classificationmetric: ClassificationMetricArtifact):
-        try:
+    def track_mlflow(self,best_model,classificationmetric):
+
+        try: 
+            mlflow.set_registry_uri(MLFLOW_TRACKING_URI)
+            tracking_url_type_store = urlparse(mlflow.get_tracking_uri()).scheme
 
             with mlflow.start_run():
-                mlflow.log_metric("accuracy_score", classificationmetric.accuracy)
-                mlflow.log_metric("f1_score", classificationmetric.f1_score)
-                mlflow.log_metric("precession_score", classificationmetric.precision_score)
-                mlflow.log_metric("recall_score", classificationmetric.recall_score)
-                mlflow.sklearn.log_model(best_model, "model")
+                f1_score=classificationmetric.f1_score
+                precision_score=classificationmetric.precision_score
+                recall_score=classificationmetric.recall_score
+                
+                mlflow.log_metric("f1_score",f1_score)
+                mlflow.log_metric("precision",precision_score)
+                mlflow.log_metric("recall_score",recall_score)
+                mlflow.sklearn.log_model(best_model,"model")
+
+                # Model registry does not work with file store
+                if tracking_url_type_store != "file":
+
+                    # Register the model
+                    # There are other ways to use the Model Registry, which depends on the use case,
+                    # please refer to the doc for more information:
+                    # https://mlflow.org/docs/latest/model-registry.html#api-workflow
+                    mlflow.sklearn.log_model(best_model, "model", registered_model_name=best_model)
+                else:
+                    mlflow.sklearn.log_model(best_model, "model")
 
         except Exception as e:
+            logging.error(f"Error initializing ModelTrainer. Error: {e}")
             raise NetworkSecurityException(e, sys)
 
     def train_model(self, X_train, y_train, X_test, y_test) -> ModelTrainerArtifact:
